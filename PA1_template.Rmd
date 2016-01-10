@@ -7,12 +7,35 @@ output:
 
 
 ## Loading and preprocessing the data
+Load the data found in the "activity.zip" file (assumption that this file already exists in the root of this project).
+```{r}
+if(file.exists("activity.zip")){
+    dataFile <- unz("activity.zip", "activity.csv")
+    data <- read.csv(dataFile, header = TRUE)
+}
+```
 
+There are a number of days/intervals where there are "NA" step values. For now we'll clean this up from the dataset
 
+```{r}
+data <- data[!is.na(data$steps), ]
+```
 
 ## What is mean total number of steps taken per day?
 
+Since each day comprises of multiple intervals, we'll sum the number of steps taken each day
 
+```{r}
+library(dplyr)
+stepsPerDay <- summarise(group_by(data, date), steps=sum(steps))
+```
+
+From the histogram below we can visualize the number of steps taken each day
+
+```{r}
+library(ggplot2)
+ggplot(stepsPerDay, aes(x=date, y = steps)) + geom_histogram(stat="identity", binwidth=30, colour="white") + theme(axis.text.x = element_text(angle=90)) + ylab("Steps") + xlab("Date") 
+```
 
 ## What is the average daily activity pattern?
 
