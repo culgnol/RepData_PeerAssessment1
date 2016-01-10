@@ -7,7 +7,13 @@ output:
 
 
 ## Loading and preprocessing the data
-
+Load the data found in the "activity.zip" file (assumption that this file already exists in the root of this project).
+```{r}
+if(file.exists("activity.zip")){
+    dataFile <- unz("activity.zip", "activity.csv")
+    data <- read.csv(dataFile, header = TRUE)
+}
+```
 
 
 ## What is mean total number of steps taken per day?
